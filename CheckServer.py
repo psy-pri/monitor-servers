@@ -2,15 +2,13 @@ import socket
 import ssl
 from datetime import date, datetime
 import pickle #save runtime info in a pickle file after py file execution 
-
 import subprocess #helps with firewall connectivity issues in servers 
 import platform #helps to know the platform like windows or linux
-
+from EmailAlert import email_alert 
 
 '''
-class def : This class represents a server
+This class represents a server
 
-params-
 name: server name/ IP address 
 port: server port to connect to
 connection: type of connection - ssl,ping
@@ -58,6 +56,11 @@ class Server():
         except Exception as e:
             msg = "No clue?? {}".format(e)
     
+        if success == False and self.alert == False:
+            #send alert
+            self.alert = True
+            email_alert(self.name,"{}\n{}".format(msg,now),"pri.test2103@gmail.com")
+            
         self.create_history(msg,success,now)
 
     def create_history(self, msg, success, now):
@@ -91,5 +94,6 @@ if __name__ == "__main__":
     for server in servers:
         server.check_connection()
         print(len(server.history))
+        print(server.history[-1])
 
     pickle.dump(servers, open("servers.pickle", "wb")) #pickle.dump(what u want to save, open(filename.pickle, write mode))

@@ -1,5 +1,5 @@
 '''
-This functionality is created to add a new server to the pickle file without deleting it
+This functionality is created to add a new server to the pickle file without deleting wit
 '''
 
 import pickle 
